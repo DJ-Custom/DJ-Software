@@ -1,0 +1,474 @@
+/* ============================================
+   GrapesJS Theme Overrides
+   Integra GrapesJS con la identidad visual
+   del ERP Software DJ D+J
+   ============================================ */
+
+/* Base GrapesJS styles - essential overrides */
+.gjs-editor {
+    font-family: var(--font-main, 'Inter', sans-serif) !important;
+}
+
+.gjs-cv-canvas {
+    background: transparent !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.gjs-frame {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
+    transition: box-shadow 0.3s ease, max-width 0.3s ease !important;
+}
+
+.gjs-frame-wrapper {
+    background: transparent !important;
+}
+
+/* Canvas wrapper background */
+.gjs-cv-canvas-bg {
+    background: var(--bg-body, #f1f5f9) !important;
+}
+
+/* Light theme canvas */
+.gjs-frame {
+    background: #ffffff !important;
+}
+
+/* Panels */
+.gjs-pn-panel {
+    background: transparent !important;
+    border: none !important;
+}
+
+.gjs-pn-buttons {
+    background: transparent !important;
+}
+
+.gjs-pn-btn {
+    background: transparent !important;
+    color: var(--text-secondary, #475569) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 12px !important;
+    transition: all 0.2s ease !important;
+}
+
+.gjs-pn-btn:hover {
+    background: var(--bg-hover, rgba(0,0,0,0.04)) !important;
+    color: var(--primary-dark, #0d496b) !important;
+}
+
+.gjs-pn-btn.gjs-pn-active {
+    background: var(--gradient-main, linear-gradient(135deg, #0e3b58, #006bb3)) !important;
+    color: #ffffff !important;
+}
+
+/* Blocks panel */
+.gjs-blocks-c {
+    background: transparent !important;
+    padding: 8px !important;
+}
+
+.gjs-block {
+    background: var(--bg-input, #f5f5f5) !important;
+    border: 1px solid transparent !important;
+    border-radius: 10px !important;
+    color: var(--text-secondary, #475569) !important;
+    padding: 14px 10px !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: none !important;
+    width: auto !important;
+    min-width: unset !important;
+    margin: 0 !important;
+}
+
+.gjs-block:hover {
+    border-color: var(--primary-gold, #1f5f7c) !important;
+    box-shadow: 0 2px 12px rgba(13, 73, 107, 0.1) !important;
+    transform: translateY(-2px) !important;
+}
+
+.gjs-block-label {
+    color: var(--text-secondary, #475569) !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    font-family: var(--font-main) !important;
+}
+
+/* Style Manager */
+.gjs-sm-sector {
+    background: transparent !important;
+    border: none !important;
+    margin-bottom: 4px !important;
+}
+
+.gjs-sm-sector-title {
+    background: var(--bg-input, #f5f5f5) !important;
+    color: var(--text-primary, #1a2332) !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    padding: 10px 14px !important;
+    border-radius: 8px !important;
+    font-family: var(--font-main) !important;
+}
+
+.gjs-sm-sector.gjs-sm-open .gjs-sm-sector-title {
+    border-radius: 8px 8px 0 0 !important;
+}
+
+.gjs-sm-properties {
+    background: rgba(0, 0, 0, 0.02) !important;
+    border-radius: 0 0 8px 8px !important;
+    padding: 8px 12px !important;
+}
+
+.gjs-sm-label {
+    color: var(--text-secondary, #475569) !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+}
+
+.gjs-sm-field {
+    background: var(--bg-input, #f5f5f5) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    border-radius: 6px !important;
+}
+
+.gjs-sm-field:hover {
+    border-color: var(--primary-gold, #1f5f7c) !important;
+}
+
+.gjs-sm-field input,
+.gjs-sm-field select {
+    color: var(--text-primary, #1a2332) !important;
+    font-size: 13px !important;
+    font-family: var(--font-main) !important;
+}
+
+.gjs-sm-field .gjs-input-holder input {
+    background: transparent !important;
+}
+
+.gjs-color-warn {
+    background: var(--bg-input, #f5f5f5) !important;
+    border-radius: 6px !important;
+}
+
+/* Layer Manager */
+.gjs-layer-item {
+    background: transparent !important;
+    border: none !important;
+}
+
+.gjs-layer-item:hover {
+    background: var(--bg-hover, rgba(0,0,0,0.04)) !important;
+    border-radius: 6px !important;
+}
+
+.gjs-layer-title {
+    color: var(--text-secondary, #475569) !important;
+    font-size: 12px !important;
+}
+
+.gjs-layer-count {
+    color: var(--text-muted, #94a3b8) !important;
+}
+
+.gjs-layer-vis,
+.gjs-layer-caret {
+    color: var(--text-muted, #94a3b8) !important;
+}
+
+.gjs-layer-item.gjs-selected .gjs-layer-title {
+    color: var(--primary-dark, #0d496b) !important;
+    font-weight: 600 !important;
+}
+
+/* Trait Manager */
+.gjs-trt-trait {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+    padding: 8px 0 !important;
+}
+
+.gjs-trt-label {
+    color: var(--text-secondary, #475569) !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+}
+
+.gjs-trt-field input,
+.gjs-trt-field select {
+    background: var(--bg-input, #f5f5f5) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    border-radius: 6px !important;
+    color: var(--text-primary, #1a2332) !important;
+    padding: 8px 10px !important;
+    font-size: 13px !important;
+    font-family: var(--font-main) !important;
+}
+
+.gjs-trt-field input:focus,
+.gjs-trt-field select:focus {
+    border-color: var(--primary-gold, #1f5f7c) !important;
+    outline: none !important;
+}
+
+/* Selector Manager */
+.gjs-clm-tags {
+    color: var(--text-primary, #1a2332) !important;
+    font-size: 12px !important;
+}
+
+.gjs-clm-tag {
+    background: var(--gradient-main, linear-gradient(135deg, #0e3b58, #006bb3)) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+}
+
+.gjs-clm-tag-status {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Component highlight/selection */
+.gjs-comp-selected {
+    outline: 2px solid var(--primary-gold, #1f5f7c) !important;
+    outline-offset: 2px !important;
+}
+
+.gjs-highlighter-warning {
+    border: 2px dashed var(--primary-gold, #1f5f7c) !important;
+}
+
+.gjs-toolbar {
+    background: var(--bg-card) !important;
+    border-radius: 8px !important;
+    box-shadow: var(--shadow-md) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.gjs-toolbar-item {
+    color: var(--text-secondary, #475569) !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    transition: all 0.15s ease !important;
+}
+
+.gjs-toolbar-item:hover {
+    background: var(--bg-hover, rgba(0,0,0,0.04)) !important;
+    color: var(--primary-dark, #0d496b) !important;
+}
+
+/* Badge/label on selected component */
+.gjs-badge {
+    background: var(--gradient-main, linear-gradient(135deg, #0e3b58, #006bb3)) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    padding: 3px 8px !important;
+    font-family: var(--font-main) !important;
+}
+
+/* Device Manager */
+.gjs-device-label {
+    color: var(--text-secondary, #475569) !important;
+    font-size: 12px !important;
+}
+
+/* Resizer handles */
+.gjs-resizer-h {
+    border-color: var(--primary-gold, #1f5f7c) !important;
+}
+
+/* Commands modal */
+.gjs-mdl-dialog {
+    background: var(--bg-card) !important;
+    border-radius: var(--radius-xl, 16px) !important;
+    box-shadow: var(--shadow-xl) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.gjs-mdl-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+    padding: 16px 20px !important;
+}
+
+.gjs-mdl-title {
+    color: var(--text-primary, #1a2332) !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    font-family: var(--font-main) !important;
+}
+
+.gjs-mdl-btn-close {
+    color: var(--text-muted, #94a3b8) !important;
+}
+
+.gjs-mdl-btn-close:hover {
+    color: var(--danger, #ef4444) !important;
+}
+
+.gjs-mdl-content {
+    color: var(--text-secondary, #475569) !important;
+    padding: 20px !important;
+}
+
+/* Asset Manager */
+.gjs-am-assets-cont {
+    color: var(--text-primary, #1a2332) !important;
+}
+
+.gjs-am-asset {
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.gjs-am-asset:hover {
+    border-color: var(--primary-gold, #1f5f7c) !important;
+    box-shadow: 0 2px 8px rgba(13, 73, 107, 0.1) !important;
+}
+
+.gjs-am-preview-cont {
+    border-radius: 6px !important;
+    overflow: hidden !important;
+}
+
+.gjs-am-add-asset button {
+    background: var(--gradient-main, linear-gradient(135deg, #0e3b58, #006bb3)) !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+
+/* Device canvas backgrounds */
+.gjs-cv-canvas-bg {
+    background: var(--bg-body, #f1f5f9) !important;
+}
+
+/* ============================================
+   DARK THEME OVERRIDES
+   ============================================ */
+
+[data-theme="dark"] .gjs-frame {
+    background: #1e293b !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .gjs-cv-canvas-bg {
+    background: #0b1120 !important;
+}
+
+[data-theme="dark"] .gjs-sm-sector-title {
+    background: #1e293b !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .gjs-sm-properties {
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+[data-theme="dark"] .gjs-sm-label {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .gjs-sm-field {
+    background: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .gjs-sm-field input,
+[data-theme="dark"] .gjs-sm-field select {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .gjs-block {
+    background: #1e293b !important;
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .gjs-block:hover {
+    border-color: var(--gold-light, #408eb3) !important;
+}
+
+[data-theme="dark"] .gjs-block-label {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .gjs-layer-title {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .gjs-layer-item.gjs-selected .gjs-layer-title {
+    color: var(--gold-light, #408eb3) !important;
+}
+
+[data-theme="dark"] .gjs-pn-btn {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .gjs-pn-btn:hover {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .gjs-trait-field input,
+[data-theme="dark"] .gjs-trt-field input,
+[data-theme="dark"] .gjs-trt-field select {
+    background: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .gjs-clm-tags {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .gjs-mdl-dialog {
+    background: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .gjs-mdl-title {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .gjs-mdl-content {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .gjs-am-assets-cont {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .gjs-am-asset {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .gjs-toolbar {
+    background: #1e293b !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .gjs-toolbar-item {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .gjs-toolbar-item:hover {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .gjs-badge {
+    background: linear-gradient(135deg, #408eb3, #006bb3) !important;
+}
+
+[data-theme="dark"] .gjs-device-label {
+    color: #94a3b8 !important;
+}

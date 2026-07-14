@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use App\Traits\Auditable;
+
+class PedidoDetalle extends Model
+{
+    use Auditable;
+    protected $table = 'pedido_detalle';
+    public $timestamps = false;
+    const CREATED_AT = 'created_at';
+
+    protected $fillable = ['pedido_id', 'producto_id', 'cantidad', 'precio_unitario', 'descuento', 'impuesto', 'subtotal', 'reservado'];
+
+    public function producto() { return $this->belongsTo(Producto::class, 'producto_id'); }
+}

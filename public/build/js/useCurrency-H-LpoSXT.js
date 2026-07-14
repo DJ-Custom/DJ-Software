@@ -1,0 +1,1 @@
+import{n as e}from"./app-C-9USn4o.js";function t(){let t=e();function n(e,n=`CRC`){if(e==null)return t.simbolo+`0`;let r=t.convertir(Number(e||0),n);return t.formatMoney(r)}function r(e){return t.formatMoney(e)}return{fm:n,fmRaw:r,get simbolo(){return t.simbolo},get divisa(){return t.divisa},store:t}}export{t};

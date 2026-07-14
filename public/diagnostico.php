@@ -101,14 +101,27 @@ try {
     
     $content = $response->getContent();
     echo "response length: " . strlen($content) . " bytes\n";
+    echo "Content-Type: " . $response->headers->get('Content-Type', 'N/A') . "\n";
     
     // Check if blade rendered
     if (strpos($content, 'app.js') !== false || strpos($content, 'vite') !== false) {
         echo "Blade rendered: YES\n";
     } else {
         echo "Blade rendered: NO\n";
-        echo "First 500 chars of response:\n";
-        echo substr($content, 0, 500) . "\n";
+        echo "--- First 1000 chars of response ---\n";
+        echo htmlspecialchars(substr($content, 0, 1000)) . "\n";
+        echo "--- END ---\n";
+    }
+    
+    // Also check the API
+    echo "\n=== API TEST ===\n";
+    $apiRequest = Illuminate\Http\Request::create('/api/user', 'GET');
+    try {
+        $apiResponse = $kernel->handle($apiRequest);
+        echo "API /api/user status: " . $apiResponse->getStatusCode() . "\n";
+        echo "API response: " . substr($apiResponse->getContent(), 0, 200) . "\n";
+    } catch (Throwable $e) {
+        echo "API error: " . $e->getMessage() . "\n";
     }
 } catch (Throwable $e) {
     echo "ERROR: " . $e->getMessage() . "\n";

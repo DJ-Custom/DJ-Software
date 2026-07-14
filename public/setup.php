@@ -1,11 +1,13 @@
 <?php
 /**
- * SETUP TEMPORAL v2 - Sin exec(), todo via PHP puro
+ * SETUP TEMPORAL v3 - Sin exec(), todo via PHP puro, con errores
  */
-echo "<h1>DJ Software - Setup v2</h1>";
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+header('Content-Type: text/html; charset=utf-8');
+
+echo "<h1>DJ Software - Setup v3</h1>";
 echo "<pre>";
-ob_flush();
-flush();
 
 // 1. Crear .env con APP_KEY ya generado
 $key = 'base64:' . base64_encode(random_bytes(32));
@@ -63,6 +65,7 @@ VITE_APP_NAME=\"\${APP_NAME}\"
 $envPath = dirname(__DIR__) . '/.env';
 file_put_contents($envPath, $envContent);
 echo "[OK] .env creado con APP_KEY\n";
+ob_flush(); flush();
 
 // 2. Conectar a la base de datos
 try {
@@ -78,90 +81,87 @@ try {
     echo "</pre>";
     exit;
 }
+ob_flush(); flush();
 
-// 3. Ejecutar migraciones leyendo el archivo SQL
-echo "\n--- Ejecutando migraciones ---\n";
-$migrationFile = dirname(__DIR__) . '/database/migrations/2026_06_11_000000_create_all_tables_consolidated.php';
-
-// Primero, verificar si las tablas ya existen
+// 3. Verificar tablas
+echo "\n--- Verificando migraciones ---\n";
 $tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
-if (count($tables) > 5) {
-    echo "[SKIP] Ya existen " . count($tables) . " tablas en la base de datos\n";
-} else {
-    // Leer el SQL de migracion y ejecutar
-    echo "Ejecutando SQL directamente...\n";
+echo "[OK] Ya existen " . count($tables) . " tablas en la base de datos\n";
+ob_flush(); flush();
 
-    // Usar el archivo SQL exportado si existe
-    $sqlFile = dirname(__DIR__) . '/database_export_fixed.sql';
-    if (file_exists($sqlFile)) {
-        $sql = file_get_contents($sqlFile);
-        // Separar por lineas y ejecutar cadaStatement
-        $statements = array_filter(
-            array_map('trim', explode(';', $sql)),
-            function($s) { return !empty($s) && !preg_match('/^--/', $s); }
-        );
-        $count = 0;
-        foreach ($statements as $statement) {
-            if (!empty(trim($statement))) {
-                try {
-                    $pdo->exec($statement);
-                    $count++;
-                } catch (PDOException $e) {
-                    // Ignorar errores de tablas que ya existen
-                    if (strpos($e->getMessage(), 'already exists') === false) {
-                        echo "Warning: " . $e->getMessage() . "\n";
-                    }
-                }
-            }
-        }
-        echo "[OK] $count statements ejecutados\n";
-    } else {
-        echo "[ERROR] No se encontro database_export.sql\n";
-        echo "Intentando crear tablas via Laravel migrations...\n";
-    }
-}
+// 4. Crear storage directory y symlink
+echo "\n--- Creando storage ---\n";
+$storageBase = dirname(__DIR__) . '/storage';
+$storageAppPublic = $storageBase . '/app/public';
+$publicStorage = dirname(__DIR__) . '/public/storage';
 
-// 4. Crear storage symlink
-echo "\n--- Creando storage symlink ---\n";
-$storagePath = dirname(__DIR__) . '/storage/app/public';
-$publicPath = dirname(__DIR__) . '/public/storage';
-if (!file_exists($publicPath)) {
-    if (is_dir($storagePath)) {
-        symlink($storagePath, $publicPath);
-        echo "[OK] Storage symlink creado\n";
-    } else {
-        echo "[WARN] storage/app/public no existe, creando...\n";
-        mkdir($storagePath, 0755, true);
-        symlink($storagePath, $publicPath);
-        echo "[OK] Storage creado y vinculado\n";
-    }
-} else {
-    echo "[SKIP] Storage symlink ya existe\n";
-}
-
-// 5. Crear carpetas de cache
-echo "\n--- Preparando cache ---\n";
-$cacheDir = dirname(__DIR__) . '/storage/framework/cache/data';
-$sessionsDir = dirname(__DIR__) . '/storage/framework/sessions';
-$viewsDir = dirname(__DIR__) . '/storage/framework/views';
-
-foreach ([$cacheDir, $sessionsDir, $viewsDir] as $dir) {
+// Crear carpetas necesarias
+$dirs = [
+    $storageBase . '/app',
+    $storageBase . '/app/public',
+    $storageBase . '/framework',
+    $storageBase . '/framework/cache',
+    $storageBase . '/framework/cache/data',
+    $storageBase . '/framework/sessions',
+    $storageBase . '/framework/views',
+    $storageBase . '/logs',
+];
+foreach ($dirs as $dir) {
     if (!is_dir($dir)) {
         mkdir($dir, 0755, true);
+        echo "  [CREATE] $dir\n";
     }
 }
-echo "[OK] Carpetas de cache listas\n";
 
-// 6. Verificar que todo funciona
-echo "\n--- Verificacion ---\n";
+// Crear symlink
+if (file_exists($publicStorage) || is_link($publicStorage)) {
+    echo "[SKIP] Storage symlink ya existe\n";
+} else {
+    try {
+        symlink($storageAppPublic, $publicStorage);
+        echo "[OK] Storage symlink creado\n";
+    } catch (Exception $e) {
+        echo "[WARN] No se pudo crear symlink: " . $e->getMessage() . "\n";
+        echo "  Intentando copiar archivos...\n";
+        // Copiar en lugar de symlink
+        if (is_dir($storageAppPublic)) {
+            exec("cp -r $storageAppPublic $publicStorage 2>&1", $output, $code);
+            echo $code === 0 ? "[OK] Archivos copiados\n" : "[ERROR] No se pudo copiar\n";
+        }
+    }
+}
+ob_flush(); flush();
+
+// 5. Permisos
+echo "\n--- Configurando permisos ---\n";
+$chmodDirs = [
+    $storageBase,
+    dirname(__DIR__) . '/bootstrap/cache',
+];
+foreach ($chmodDirs as $dir) {
+    if (is_dir($dir)) {
+        @chmod($dir, 0755);
+        echo "[OK] Permisos 755 en: " . basename($dir) . "\n";
+    }
+}
+ob_flush(); flush();
+
+// 6. Verificacion final
+echo "\n=== VERIFICACION FINAL ===\n";
 echo "Archivo .env: " . (file_exists($envPath) ? "OK" : "FALTA") . "\n";
 echo "APP_KEY: " . (strpos(file_get_contents($envPath), 'APP_KEY=base64:') !== false ? "OK" : "FALTA") . "\n";
-echo "Tabla usuarios: " . ($pdo->query("SHOW TABLES LIKE 'usuarios'")->fetch() ? "OK" : "FALTA") . "\n";
-echo "Tabla productos: " . ($pdo->query("SHOW TABLES LIKE 'productos'")->fetch() ? "OK" : "FALTA") . "\n";
-echo "Storage symlink: " . (file_exists($publicPath) ? "OK" : "FALTA") . "\n";
+
+$checkTables = ['usuarios', 'productos', 'ventas', 'clientes', 'roles'];
+foreach ($checkTables as $t) {
+    $exists = $pdo->query("SHOW TABLES LIKE '$t'")->fetch();
+    echo "Tabla $t: " . ($exists ? "OK" : "FALTA") . "\n";
+}
+
+echo "Storage symlink: " . (file_exists($publicStorage) ? "OK" : "FALTA") . "\n";
+echo "Cache dir: " . (is_dir($storageBase . '/framework/cache/data') ? "OK" : "FALTA") . "\n";
+echo "Sessions dir: " . (is_dir($storageBase . '/framework/sessions') ? "OK" : "FALTA") . "\n";
 
 echo "\n</pre>";
 echo "<h2>SETUP COMPLETADO</h2>";
-echo "<p>Tu sitio deberia funcionar ahora en: <a href='https://dj-custom.website' style='font-size:20px;'>https://dj-custom.website</a></p>";
-echo "<p style='color:red; font-size:24px; font-weight:bold;'>AHORA BORRA ESTE ARCHIVO: public_html/public/setup.php</p>";
-echo "<p>Ve a File Manager → public_html → public → setup.php → Delete</p>";
+echo "<p>Tu sitio deberia funcionar: <a href='https://dj-custom.website'>https://dj-custom.website</a></p>";
+echo "<p style='color:red; font-size:24px; font-weight:bold;'>BORRA ESTE ARCHIVO: public_html/public/setup.php</p>";
